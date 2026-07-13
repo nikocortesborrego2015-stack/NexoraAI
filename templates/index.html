@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Nexora AI</title>
+
+<style>
+body {
+    background: linear-gradient(135deg, #020024, #090979, #00d4ff);
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}
+
+h1 {
+    font-size: 45px;
+}
+
+#chat {
+    margin: 20px;
+    padding: 10px;
+}
+
+input {
+    padding: 10px;
+    width: 300px;
+}
+
+button {
+    padding: 10px;
+    cursor: pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1> Nexora AI</h1>
+
+<div id="chat"></div>
+
+<input id="pregunta" placeholder="Escribe tu pregunta">
+<button onclick="enviar()">Enviar</button>
+
+<script>
+async function enviar() {
+
+    let caja = document.getElementById("pregunta");
+    let pregunta = caja.value;
+
+    if (pregunta == "") return;
+
+    document.getElementById("chat").innerHTML += 
+    "<p><b>Tú:</b> " + pregunta + "</p>";
+
+    caja.value = "";
+
+    let respuesta = await fetch("/preguntar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "pregunta=" + encodeURIComponent(pregunta)
+    });
+
+    let texto = await respuesta.text();
+
+    document.getElementById("chat").innerHTML += 
+    "<p><b> Nexora AI:</b> " + texto + "</p>";
+}
+</script>
+
+</body>
+</html>
