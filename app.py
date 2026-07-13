@@ -1,10 +1,14 @@
 from flask import Flask, render_template, request
-from ollama import chat
+from groq import Groq
 from ddgs import DDGS
 import time
+import os
 
 app = Flask(__name__)
 
+client = Groq(
+    api_key=os.environ.get("GROQ_API_KEY")
+)
 
 def cargar_conocimientos():
     try:
@@ -53,17 +57,13 @@ def preguntar():
 
     print("Búsqueda:", round(time.time() - inicio, 2), "segundos")
 
-    respuesta = chat(
-        model="qwen3:8b",
-        think=False,
-        options={
-            "temperature": 0.2,
-            "num_predict": 180
-        },
-        messages=[
-            {
-                "role": "system",
-                "content": f"""
+    respuesta = client.chat.completions.create(
+    model="llama-3.3-70b-versatile",
+    temperature=0.2,
+    messages=[
+        {
+            "role": "system",
+            "content": f"""
 Eres Nexora AI, un asistente de inteligencia artificial.
 
 Siempre respondes en español.
@@ -86,20 +86,18 @@ Información adicional:
 
 {conocimientos}
 """
-            },
-            {
-                "role": "user",
-                "content": pregunta
-            }
-        ]
-    )
+        },
+        {
+            "role": "user",
+            "content": pregunta
+        }
+    ]
+)
 
-    texto = respuesta["message"]["content"]
+    texto = respuesta.choices[0].message.content
 
     print("Tiempo total:", round(time.time() - inicio, 2), "segundos")
 
-    if "</think>" in texto:
-        texto = texto.split("</think>")[-1]
 
     return texto.strip()
 
