@@ -19,7 +19,7 @@ while True:
             {
                 "role": "system",
                 "content": """
-Eres Nexora AI, un asistente de inteligencia artificial.
+Eres Orivox IA, un asistente de inteligencia artificial.
 
 Siempre respondes en español.
 
