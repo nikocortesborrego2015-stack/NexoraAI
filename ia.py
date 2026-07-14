@@ -1,7 +1,7 @@
 from ollama import chat
 
 print("=" * 40)
-print("Nexora AI")
+print("Orivox IA")
 print("Tu asistente para tareas y preguntas")
 print("=" * 40)
 
@@ -40,4 +40,4 @@ Tu trabajo es:
         ]
     )
 
-    print("\n Nexora AI:", respuesta["message"]["content"])
+    print("\n Orivox IA:", respuesta["message"]["content"])
