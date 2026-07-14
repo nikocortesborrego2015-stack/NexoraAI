@@ -262,6 +262,80 @@ placeholder="Escribe un mensaje...">
 
 </div>
 
+<script>
+
+const caja = document.getElementById("pregunta");
+const boton = document.getElementById("enviar");
+
+// Enviar con Enter
+caja.addEventListener("keydown", function(e){
+
+    if(e.key==="Enter"){
+
+        e.preventDefault();
+
+        enviar();
+
+    }
+
+});
+
+// Enviar con botón
+boton.addEventListener("click", enviar);
+
+async function enviar(){
+
+    let pregunta = caja.value.trim();
+    if (pregunta === "") return;
+
+// Mostrar el mensaje del usuario inmediatamente
+let bienvenida = document.getElementById("bienvenida");
+if (bienvenida) bienvenida.remove();
+
+let usuario = document.createElement("div");
+usuario.className = "mensaje usuario";
+usuario.textContent = pregunta;
+chat.appendChild(usuario);
+
+chat.scrollTop = chat.scrollHeight;
+
+caja.value = "";
+
+    if(pregunta==="") return;
+
+    let respuesta = await fetch("/preguntar",{
+
+        method:"POST",
+
+        headers:{
+
+            "Content-Type":"application/x-www-form-urlencoded"
+
+        },
+
+        body:"pregunta="+encodeURIComponent(pregunta)
+
+    });
+
+    let texto = await respuesta.text();
+
+   // Quitar el mensaje de bienvenida
+let bienvenida = document.getElementById("bienvenida");
+if (bienvenida) bienvenida.remove();
+
+// Mensaje de la IA
+let ia = document.createElement("div");
+ia.className = "mensaje ia";
+ia.textContent = texto;
+chat.appendChild(ia);
+
+// Bajar el chat automáticamente
+chat.scrollTop = chat.scrollHeight;
+
+}
+
+</script>
+
 </body>
 
 </html>
