@@ -324,57 +324,34 @@ chat.scrollTop=chat.scrollHeight;
 
 }
 
-async function enviar(){
+async function enviar() {
 
-let pregunta=caja.value.trim();
+    let pregunta = caja.value.trim();
 
-if(pregunta==="") return;
+    if (pregunta === "") return;
 
-agregarMensaje(pregunta,"usuario");
+    // Mostrar la pregunta del usuario
+    document.getElementById("chat").innerHTML +=
+        "<p><b>Tú:</b> " + pregunta + "</p>";
 
-caja.value="";
+    caja.value = "";
 
-let escribiendo=document.createElement("div");
+    let respuesta = await fetch("/preguntar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "pregunta=" + encodeURIComponent(pregunta)
+    });
 
-escribiendo.className="escribiendo";
+    let texto = await respuesta.text();
 
-escribiendo.innerHTML="<span></span><span></span><span></span>";
+    document.getElementById("chat").innerHTML +=
+        "<p><b>Orivox IA:</b> " + texto + "</p>";
 
-chat.appendChild(escribiendo);
-
-chat.scrollTop=chat.scrollHeight;
-
-try{
-
-let respuesta=await fetch("/preguntar",{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":"application/x-www-form-urlencoded"
-
-},
-
-body:"pregunta="+encodeURIComponent(pregunta)
-
-});
-
-let texto=await respuesta.text();
-
-escribiendo.remove();
-
-agregarMensaje(texto,"ia");
-
-}catch(error){
-
-escribiendo.remove();
-
-agregarMensaje("Ocurrió un error al conectar con Orivox IA.","ia");
-
+    window.scrollTo(0, document.body.scrollHeight);
 }
 
-}
 
 </script>
 

@@ -9,7 +9,6 @@ app = Flask(__name__)
 client = Groq(
     api_key=os.environ.get("GROQ_API_KEY")
 )
-
 def cargar_conocimientos():
     try:
         with open("conocimientos.txt", "r", encoding="utf-8") as archivo:
