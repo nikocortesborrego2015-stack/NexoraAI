@@ -58,28 +58,31 @@ async function enviar() {
 
     let pregunta = caja.value.trim();
 
-    if (pregunta === "") return;
+    let pregunta = caja.value.trim();
 
-    document.getElementById("chat").innerHTML +=
-        "<p><b>Orivox IA:</b> " + texto + "</p>";
+if (pregunta === "") return;
 
-    caja.value = "";
+// Mostrar la pregunta del usuario
+document.getElementById("chat").innerHTML +=
+    "<p><b>Tú:</b> " + pregunta + "</p>";
 
-    let respuesta = await fetch("/preguntar", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: "pregunta=" + encodeURIComponent(pregunta)
-    });
+caja.value = "";
 
-    let texto = await respuesta.text();
+let respuesta = await fetch("/preguntar", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: "pregunta=" + encodeURIComponent(pregunta)
+});
 
-    document.getElementById("chat").innerHTML +=
-        "<p><b>Nexora AI:</b> " + texto + "</p>";
+let texto = await respuesta.text();
 
-    // Baja automáticamente al último mensaje
-    window.scrollTo(0, document.body.scrollHeight);
+// Mostrar la respuesta de Orivox IA
+document.getElementById("chat").innerHTML +=
+    "<p><b>Orivox IA:</b> " + texto + "</p>";
+
+window.scrollTo(0, document.body.scrollHeight);
 }
 
 </script>
