@@ -35,7 +35,7 @@ button {
 
 <body>
 
-<h1> Nexora AI</h1>
+<h1>Nexora AI</h1>
 
 <div id="chat"></div>
 
@@ -43,15 +43,25 @@ button {
 <button onclick="enviar()">Enviar</button>
 
 <script>
+
+const caja = document.getElementById("pregunta");
+
+// Enviar con Enter
+caja.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        enviar();
+    }
+});
+
 async function enviar() {
 
-    let caja = document.getElementById("pregunta");
-    let pregunta = caja.value;
+    let pregunta = caja.value.trim();
 
-    if (pregunta == "") return;
+    if (pregunta === "") return;
 
-    document.getElementById("chat").innerHTML += 
-    "<p><b>Tú:</b> " + pregunta + "</p>";
+    document.getElementById("chat").innerHTML +=
+        "<p><b>Tú:</b> " + pregunta + "</p>";
 
     caja.value = "";
 
@@ -65,9 +75,13 @@ async function enviar() {
 
     let texto = await respuesta.text();
 
-    document.getElementById("chat").innerHTML += 
-    "<p><b> Nexora AI:</b> " + texto + "</p>";
+    document.getElementById("chat").innerHTML +=
+        "<p><b>Nexora AI:</b> " + texto + "</p>";
+
+    // Baja automáticamente al último mensaje
+    window.scrollTo(0, document.body.scrollHeight);
 }
+
 </script>
 
 </body>
