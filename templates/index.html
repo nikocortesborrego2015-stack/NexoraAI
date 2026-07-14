@@ -1,238 +1,191 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Orivox IA</title>
-
 <style>
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
 
-    background:#0f172a;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+background:#0f172a;
+
+height:100vh;
+
+overflow:hidden;
 
 }
+#app{
 
-#contenedor{
+height:100vh;
 
-    width:100%;
-    max-width:900px;
-    height:100vh;
+display:flex;
 
-    background:#111827;
+flex-direction:column;
 
-    display:flex;
-    flex-direction:column;
+background:#111827;
 
 }
 
 header{
 
-    background:#1f2937;
+height:70px;
 
-    padding:20px;
+display:flex;
 
-    text-align:center;
+justify-content:center;
 
-    font-size:30px;
+align-items:center;
 
-    font-weight:bold;
+background:#111827;
 
-    color:white;
+border-bottom:1px solid #293548;
 
-    border-bottom:1px solid #374151;
+color:white;
+
+font-size:28px;
+
+font-weight:bold;
+
+}
+#app{
+
+height:100vh;
+
+display:flex;
+
+flex-direction:column;
+
+background:#111827;
+
+}
+
+header{
+
+height:70px;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:#111827;
+
+border-bottom:1px solid #293548;
+
+color:white;
+
+font-size:28px;
+
+font-weight:bold;
 
 }
 
 #chat{
 
-    flex:1;
+flex:1;
 
-    overflow-y:auto;
+overflow-y:auto;
 
-    padding:20px;
+padding:25px;
 
-    display:flex;
+display:flex;
 
-    flex-direction:column;
-
-    gap:15px;
+flex-direction:column;
 
 }
 
-.mensaje{
+#bienvenida{
 
-    max-width:80%;
+margin:auto;
 
-    padding:14px;
+text-align:center;
 
-    border-radius:18px;
-
-    line-height:1.5;
-
-    word-wrap:break-word;
+color:#94a3b8;
 
 }
 
-.usuario{
+#bienvenida h1{
 
-    background:#2563eb;
+color:white;
 
-    color:white;
-
-    align-self:flex-end;
-
-    border-bottom-right-radius:5px;
+margin-bottom:15px;
 
 }
 
-.ia{
+#inferior{
 
-    background:#374151;
+padding:18px;
 
-    color:white;
+display:flex;
 
-    align-self:flex-start;
+justify-content:center;
 
-    border-bottom-left-radius:5px;
+background:#111827;
 
-}
-
-#barra{
-
-    display:flex;
-
-    gap:10px;
-
-    padding:15px;
-
-    background:#1f2937;
+border-top:1px solid #293548;
 
 }
 
 #pregunta{
 
-    flex:1;
+width:100%;
 
-    padding:15px;
+max-width:900px;
 
-    border:none;
+padding:16px;
 
-    outline:none;
+border:none;
 
-    border-radius:12px;
+outline:none;
 
-    background:#374151;
+border-radius:18px;
 
-    color:white;
+background:#1f2937;
 
-    font-size:17px;
+color:white;
 
-}
-
-button{
-
-    width:70px;
-
-    border:none;
-
-    border-radius:12px;
-
-    cursor:pointer;
-
-    background:#2563eb;
-
-    color:white;
-
-    font-size:18px;
+font-size:17px;
 
 }
 
-button:hover{
+#enviar{
 
-    background:#1d4ed8;
+margin-left:12px;
 
-}
+width:60px;
 
-.escribiendo{
+height:60px;
 
-    display:flex;
+border:none;
 
-    gap:6px;
+border-radius:50%;
 
-    align-self:flex-start;
+background:#2563eb;
 
-    background:#374151;
+color:white;
 
-    padding:15px;
+cursor:pointer;
 
-    border-radius:18px;
-
-}
-
-.escribiendo span{
-
-    width:8px;
-
-    height:8px;
-
-    border-radius:50%;
-
-    background:white;
-
-    animation:subir 1s infinite;
+font-size:22px;
 
 }
 
-.escribiendo span:nth-child(2){
+#enviar:hover{
 
-    animation-delay:.2s;
-
-}
-
-.escribiendo span:nth-child(3){
-
-    animation-delay:.4s;
-
-}
-
-@keyframes subir{
-
-0%{
-
-transform:translateY(0);
-
-opacity:.4;
-
-}
-
-50%{
-
-transform:translateY(-8px);
-
-opacity:1;
-
-}
-
-100%{
-
-transform:translateY(0);
-
-opacity:.4;
-
-}
+background:#1d4ed8;
 
 }
 
@@ -240,21 +193,27 @@ opacity:.4;
 
 header{
 
-font-size:24px;
+font-size:23px;
 
 }
 
-.mensaje{
+#inferior{
 
-max-width:92%;
+padding:12px;
+
+}
+
+#pregunta{
 
 font-size:16px;
 
 }
 
-button{
+#enviar{
 
-width:60px;
+width:55px;
+
+height:55px;
 
 }
 
@@ -266,7 +225,7 @@ width:60px;
 
 <body>
 
-<div id="contenedor">
+<div id="app">
 
 <header>
 
@@ -274,15 +233,26 @@ width:60px;
 
 </header>
 
-<div id="chat"></div>
+<div id="chat">
 
-<div id="barra">
+<div id="bienvenida">
+
+<h1>Hola 👋</h1>
+
+<p>¿En qué puedo ayudarte hoy?</p>
+
+</div>
+
+</div>
+
+<div id="inferior">
 
 <input
+type="text"
 id="pregunta"
 placeholder="Escribe un mensaje...">
 
-<button onclick="enviar()">
+<button id="enviar">
 
 ➤
 
@@ -291,69 +261,6 @@ placeholder="Escribe un mensaje...">
 </div>
 
 </div>
-
-<script>
-
-const chat=document.getElementById("chat");
-
-const caja=document.getElementById("pregunta");
-
-caja.addEventListener("keydown",function(e){
-
-if(e.key==="Enter"){
-
-e.preventDefault();
-
-enviar();
-
-}
-
-});
-
-function agregarMensaje(texto,tipo){
-
-let div=document.createElement("div");
-
-div.className="mensaje "+tipo;
-
-div.innerText=texto;
-
-chat.appendChild(div);
-
-chat.scrollTop=chat.scrollHeight;
-
-}
-
-async function enviar() {
-
-    let pregunta = caja.value.trim();
-
-    if (pregunta === "") return;
-
-    // Mostrar la pregunta del usuario
-    document.getElementById("chat").innerHTML +=
-        "<p><b>Tú:</b> " + pregunta + "</p>";
-
-    caja.value = "";
-
-    let respuesta = await fetch("/preguntar", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: "pregunta=" + encodeURIComponent(pregunta)
-    });
-
-    let texto = await respuesta.text();
-
-    document.getElementById("chat").innerHTML +=
-        "<p><b>Orivox IA:</b> " + texto + "</p>";
-
-    window.scrollTo(0, document.body.scrollHeight);
-}
-
-
-</script>
 
 </body>
 
