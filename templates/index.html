@@ -1,91 +1,383 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Orivox IA</title>
 
 <style>
-body {
-    background: linear-gradient(135deg, #020024, #090979, #00d4ff);
-    color: white;
-    font-family: Arial;
-    text-align: center;
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
-h1 {
-    font-size: 45px;
+body{
+
+    background:#0f172a;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
 }
 
-#chat {
-    margin: 20px;
-    padding: 10px;
+#contenedor{
+
+    width:100%;
+    max-width:900px;
+    height:100vh;
+
+    background:#111827;
+
+    display:flex;
+    flex-direction:column;
+
 }
 
-input {
-    padding: 10px;
-    width: 300px;
+header{
+
+    background:#1f2937;
+
+    padding:20px;
+
+    text-align:center;
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    color:white;
+
+    border-bottom:1px solid #374151;
+
 }
 
-button {
-    padding: 10px;
-    cursor: pointer;
+#chat{
+
+    flex:1;
+
+    overflow-y:auto;
+
+    padding:20px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
 }
+
+.mensaje{
+
+    max-width:80%;
+
+    padding:14px;
+
+    border-radius:18px;
+
+    line-height:1.5;
+
+    word-wrap:break-word;
+
+}
+
+.usuario{
+
+    background:#2563eb;
+
+    color:white;
+
+    align-self:flex-end;
+
+    border-bottom-right-radius:5px;
+
+}
+
+.ia{
+
+    background:#374151;
+
+    color:white;
+
+    align-self:flex-start;
+
+    border-bottom-left-radius:5px;
+
+}
+
+#barra{
+
+    display:flex;
+
+    gap:10px;
+
+    padding:15px;
+
+    background:#1f2937;
+
+}
+
+#pregunta{
+
+    flex:1;
+
+    padding:15px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:12px;
+
+    background:#374151;
+
+    color:white;
+
+    font-size:17px;
+
+}
+
+button{
+
+    width:70px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:18px;
+
+}
+
+button:hover{
+
+    background:#1d4ed8;
+
+}
+
+.escribiendo{
+
+    display:flex;
+
+    gap:6px;
+
+    align-self:flex-start;
+
+    background:#374151;
+
+    padding:15px;
+
+    border-radius:18px;
+
+}
+
+.escribiendo span{
+
+    width:8px;
+
+    height:8px;
+
+    border-radius:50%;
+
+    background:white;
+
+    animation:subir 1s infinite;
+
+}
+
+.escribiendo span:nth-child(2){
+
+    animation-delay:.2s;
+
+}
+
+.escribiendo span:nth-child(3){
+
+    animation-delay:.4s;
+
+}
+
+@keyframes subir{
+
+0%{
+
+transform:translateY(0);
+
+opacity:.4;
+
+}
+
+50%{
+
+transform:translateY(-8px);
+
+opacity:1;
+
+}
+
+100%{
+
+transform:translateY(0);
+
+opacity:.4;
+
+}
+
+}
+
+@media(max-width:700px){
+
+header{
+
+font-size:24px;
+
+}
+
+.mensaje{
+
+max-width:92%;
+
+font-size:16px;
+
+}
+
+button{
+
+width:60px;
+
+}
+
+}
+
 </style>
 
 </head>
 
 <body>
 
-<h1>Orivox IA</h1>
+<div id="contenedor">
+
+<header>
+
+🤖 Orivox IA
+
+</header>
 
 <div id="chat"></div>
 
-<input id="pregunta" placeholder="Escribe tu pregunta">
-<button onclick="enviar()">Enviar</button>
+<div id="barra">
+
+<input
+id="pregunta"
+placeholder="Escribe un mensaje...">
+
+<button onclick="enviar()">
+
+➤
+
+</button>
+
+</div>
+
+</div>
 
 <script>
 
-const caja = document.getElementById("pregunta");
+const chat=document.getElementById("chat");
 
-// Enviar con Enter
-caja.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        enviar();
-    }
+const caja=document.getElementById("pregunta");
+
+caja.addEventListener("keydown",function(e){
+
+if(e.key==="Enter"){
+
+e.preventDefault();
+
+enviar();
+
+}
+
 });
 
-async function enviar() {
+function agregarMensaje(texto,tipo){
 
-    let pregunta = caja.value.trim();
+let div=document.createElement("div");
 
-    let pregunta = caja.value.trim();
+div.className="mensaje "+tipo;
 
-if (pregunta === "") return;
+div.innerText=texto;
 
-// Mostrar la pregunta del usuario
-document.getElementById("chat").innerHTML +=
-    "<p><b>Tú:</b> " + pregunta + "</p>";
+chat.appendChild(div);
 
-caja.value = "";
+chat.scrollTop=chat.scrollHeight;
 
-let respuesta = await fetch("/preguntar", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: "pregunta=" + encodeURIComponent(pregunta)
+}
+
+async function enviar(){
+
+let pregunta=caja.value.trim();
+
+if(pregunta==="") return;
+
+agregarMensaje(pregunta,"usuario");
+
+caja.value="";
+
+let escribiendo=document.createElement("div");
+
+escribiendo.className="escribiendo";
+
+escribiendo.innerHTML="<span></span><span></span><span></span>";
+
+chat.appendChild(escribiendo);
+
+chat.scrollTop=chat.scrollHeight;
+
+try{
+
+let respuesta=await fetch("/preguntar",{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/x-www-form-urlencoded"
+
+},
+
+body:"pregunta="+encodeURIComponent(pregunta)
+
 });
 
-let texto = await respuesta.text();
+let texto=await respuesta.text();
 
-// Mostrar la respuesta de Orivox IA
-document.getElementById("chat").innerHTML +=
-    "<p><b>Orivox IA:</b> " + texto + "</p>";
+escribiendo.remove();
 
-window.scrollTo(0, document.body.scrollHeight);
+agregarMensaje(texto,"ia");
+
+}catch(error){
+
+escribiendo.remove();
+
+agregarMensaje("Ocurrió un error al conectar con Orivox IA.","ia");
+
+}
+
 }
 
 </script>
 
 </body>
+
 </html>
